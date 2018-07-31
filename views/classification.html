@@ -3,25 +3,55 @@
         image area
     </div>
     <div class="col-5" style="background-color:#28a745;height:100%">
-        console ares
         <div class="row" id="selector">
             　<button class="btn btn-primary active" aria-pressed="true" ng-click="change('main.classification')">Classification</button>
             　<button class="btn btn-secondary" aria-pressed="true" ng-click="change('main.detection')">Detection</button>
             　<button class="btn btn-secondary" aria-pressed="true" ng-click="change('main.segmentation')">Segmentation</button>
         </div>
-        classification
+        <h2>Classification　{{ img_state }}</h2>
         <div class="row" id="curresnt-tag">
-            <span>　現在のTag : {{ current_tag }}</span>
+            　<h4>current Tag　：　{{ current_tag }}</h4>
         </div>
         <form>
             <div class="form-group">
                 <input type="text" class="form-control" placeholder="tag name" ng-model="tag_query">
-                <button type="submit" class="btn btn-info" ng-click="book_search()">search</button>
-                <button type="submit" class="btn btn-warning" ng-click="book_search()">Add Tag＋</button>
+                <button type="submit" class="btn btn-info" ng-click="tag_search()">search</button>
+                <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#tagModal">Edit Tag＋</button>
             </div>
             <span ng-repeat="tag in searched_tags">
-                <button class="btn" ng-style="{ 'background': tag.backgroundcolor }">{{tag.name}}</button>
+                <button class="btn" ng-style="{ 'background': tag.backgroundcolor }" ng-click="set_tag($index)">{{tag.name}}</button>
             </span>
         </form>
     </div>
+
+    <!--モーダル-->
+    <div class="modal fade" id="tagModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">タグの編集</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="閉じる">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Tag name" ng-model="add_tag_name">
+                        <button type="submit" class="btn btn-success" ng-click="add_tag()">Add</button>
+                    </div>
+                </form>
+
+                <div ng-repeat="tag in classification_tags">
+                    <p ng-style="{'font-size': '30px', 'background': tag.backgroundcolor}">
+                        <button class="btn" ng-style="{'background': tag.backgroundcolor}" ng-click="delete_tag($index)"><i class="fas fa-times"></i></button>
+                        {{tag.name}}
+                    </p>
+                </div>
+                <!--<div class="modal-footer">-->
+                    <!--<button type="button" class="btn btn-secondary" data-dismiss="modal">閉じる</button>-->
+                    <!--<button type="button" class="btn btn-primary">登録</button>-->
+                <!--</div>&lt;!&ndash; /.modal-footer &ndash;&gt;-->
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 </div>

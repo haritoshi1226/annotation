@@ -82,19 +82,23 @@ let app = angular.module('myApp', [ 'ui.router' ])
         $scope.change = function(state){
             $state.go(state);
         };
+        $scope.current_img_ind = 0;
+        $scope.img_state = ($scope.current_img_ind+1).toString() + " / " + annotator.classification_labels.length.toString();
         $scope.current_tag = annotator.classification_labels[0].name;
         $scope.tag_query = "";
-        $scope.tags = annotator.classification_tags;
+        $scope.classification_tags = annotator.classification_tags;
         $scope.searched_tags = annotator.classification_tags;
         let pre_tag_query = "";
         $scope.tag_search = function(){
-            const r = [];
-            for(let i=0; i<$scope.tags.length; i++){
-                if ($scope.tags[i].name.toLowerCase().indexOf($scope.tag_query.toLowerCase()) >= 0){
-                    r.push($scope.tags[i])
+            if ($scope.tag_query != ""){
+                const r = [];
+                for(let i=0; i<$scope.classification_tags.length; i++){
+                    if ($scope.classification_tags[i].name.toLowerCase().indexOf($scope.tag_query.toLowerCase()) >= 0){
+                        r.push($scope.classification_tags[i])
+                    }
                 }
+                $scope.searched_tags = r;
             }
-            $scope.searched_tags = r;
         };
         let incremental = function(){
             if ($scope.tag_query != pre_tag_query){
@@ -102,13 +106,44 @@ let app = angular.module('myApp', [ 'ui.router' ])
                 if ($scope.tag_query != ""){
                     $scope.tag_search();
                 } else {
-                    $scope.searched_tags = $scope.tags;
+                    $scope.searched_tags = $scope.classification_tags;
                 }
             }
         };
         $interval(incremental, 500);
-        $scope.add = function(){
-
+        $scope.add_tag_name = "";
+        $scope.add_tag = function(){
+            if ($scope.add_tag_name != ""){
+                $scope.classification_tags.push(
+                    {
+                        name: $scope.add_tag_name,
+                        index: $scope.classification_tags.length,
+                        backgroundcolor: annotator.colors[$scope.classification_tags.length]
+                    }
+                );
+                $scope.tag_search();
+                $scope.add_tag_name = "";
+            }
+        };
+        $scope.delete_tag = function(ind){
+            const r = [];
+            let count = 0;
+            for (let i=0; i<$scope.classification_tags.length; i++){
+                if (i!=ind){
+                    let tmp = $scope.classification_tags[i];
+                    tmp.index = count;
+                    tmp.backgroundcolor = annotator.colors[count];
+                    r.push(tmp);
+                    count += 1;
+                }
+            }
+            $scope.classification_tags = r;
+            $scope.tag_query = "";
+            $scope.searched_tags = $scope.classification_tags;
+        };
+        $scope.set_tag = function(ind){
+            $scope.current_tag = $scope.searched_tags[ind].name;
+            annotator.classification_labels[$scope.current_img_ind] = $scope.searched_tags[ind]
         }
     }])
     .controller('DetectionController', ['$scope', '$state', function($scope, $state) {
