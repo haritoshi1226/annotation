@@ -1,0 +1,14 @@
+<div class="row" ng-controller="SegmentationController">
+    <div class="col-7" style="background-color:#14AEE1;height:100%">
+        image area
+    </div>
+    <div class="col-5" style="background-color:#28a745;height:100%">
+        console ares
+        <div class="row" id="selector">
+            　<button class="btn btn-secondary" aria-pressed="true" ng-click="change('main.classification')">Classification</button>
+            　<button class="btn btn-secondary" aria-pressed="true" ng-click="change('main.detection')">Detection</button>
+            　<button class="btn btn-primary active" aria-pressed="true" ng-click="change('main.segmentation')">Segmentation</button>
+        </div>
+        segmentation
+    </div>
+</div>

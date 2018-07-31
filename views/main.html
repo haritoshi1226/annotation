@@ -1,0 +1,13 @@
+<div class="container" ng-controller="MainController">
+    <div class="row" style="background-color:#bee5eb;">
+        <form>
+            <div class="row">
+                <label>Folder：</label>
+                <select ng-model="folder" ng-options="f.name for f in folders"></select>
+                <text id="current_folder" style="display:none">{{ folder }}</text>
+                　<button class="btn btn-primary">Create New</button>
+            </div>
+        </form>
+    </div>
+    <div ui-view></div>
+</div>

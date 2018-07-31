@@ -1,0 +1,27 @@
+<div class="row" ng-controller="ClassificationController">
+    <div class="col-7" style="background-color:#14AEE1;height:100%">
+        image area
+    </div>
+    <div class="col-5" style="background-color:#28a745;height:100%">
+        console ares
+        <div class="row" id="selector">
+            　<button class="btn btn-primary active" aria-pressed="true" ng-click="change('main.classification')">Classification</button>
+            　<button class="btn btn-secondary" aria-pressed="true" ng-click="change('main.detection')">Detection</button>
+            　<button class="btn btn-secondary" aria-pressed="true" ng-click="change('main.segmentation')">Segmentation</button>
+        </div>
+        classification
+        <div class="row" id="curresnt-tag">
+            <span>　現在のTag : {{ current_tag }}</span>
+        </div>
+        <form>
+            <div class="form-group">
+                <input type="text" class="form-control" placeholder="tag name" ng-model="tag_query">
+                <button type="submit" class="btn btn-info" ng-click="book_search()">search</button>
+                <button type="submit" class="btn btn-warning" ng-click="book_search()">Add Tag＋</button>
+            </div>
+            <span ng-repeat="tag in searched_tags">
+                <button class="btn" ng-style="{ 'background': tag.backgroundcolor }">{{tag.name}}</button>
+            </span>
+        </form>
+    </div>
+</div>
